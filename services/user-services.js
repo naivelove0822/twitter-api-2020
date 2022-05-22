@@ -104,7 +104,8 @@ const userServices = {
       User.findByPk(req.params.id, { raw: true }),
       Like.findAll({
         where: { UserId: req.params.id },
-        include: [{ model: Tweet, include: [{ model: User, attributes: ['id', 'name', 'account', 'avatar'] }, { model: Reply }, { model: Like }] }]
+        include: [{ model: Tweet, include: [{ model: User, attributes: ['id', 'name', 'account', 'avatar'] }, { model: Reply }, { model: Like }] }],
+        order: [['createdAt', 'DESC']]
       })
     ])
       .then(([user, likes]) => {
@@ -123,7 +124,8 @@ const userServices = {
     return User.findByPk(req.params.id, {
       include: [
         { model: User, as: 'Followings' }
-      ]
+      ],
+      order: [['createdAt', 'DESC']]
     })
       .then((user) => {
         if (!user) throw new Error("User didn't exists!")
@@ -144,7 +146,8 @@ const userServices = {
     return User.findByPk(req.params.id, {
       include: [
         { model: User, as: 'Followers' }
-      ]
+      ],
+      order: [['createdAt', 'DESC']]
     })
       .then((user) => {
         if (!user) throw new Error("User didn't exists!")
